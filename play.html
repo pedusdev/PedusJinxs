@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ title }} — PedusJinxs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f0f1a; --bg2: #1a1a2e; --accent: #a855f7;
+      --neon: #00f5ff; --text: #e2e8f0; --muted: #94a3b8;
+      --border: #2d2d4e; --radius: 12px;
+    }
+    body { background: #000; color: var(--text); font-family: 'Rajdhani', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* Play Header */
+    .play-header { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1.5rem; background: var(--bg2); border-bottom: 1px solid var(--border); }
+    .btn-back { background: #1e1e35; border: 1px solid var(--border); color: var(--text); padding: 0.5rem 1rem; border-radius: 8px; font-weight: 700; transition: all 0.2s; font-family: 'Rajdhani', sans-serif; font-size: 1rem; cursor: pointer; text-decoration: none; }
+    .btn-back:hover { border-color: var(--accent); color: var(--accent); }
+    .play-title-block { display: flex; align-items: center; gap: 0.8rem; text-align: center; }
+    .play-icon { font-size: 2rem; }
+    .play-game-title { font-family: 'Press Start 2P', monospace; font-size: 0.85rem; background: linear-gradient(90deg, var(--accent), var(--neon)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .play-system { color: var(--muted); font-size: 0.85rem; margin-top: 3px; }
+
+    /* Emulator */
+    .play-main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
+    .emulator-wrapper { width: 100%; max-width: 900px; background: #000; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: 0 0 40px rgba(168,85,247,0.25); }
+    #game { width: 100%; height: 500px; }
+
+    /* Footer */
+    .footer { text-align: center; padding: 1.2rem; background: var(--bg2); border-top: 1px solid var(--border); color: var(--muted); font-size: 0.88rem; }
+
+    @media (max-width: 600px) { #game { height: 320px; } }
+  </style>
+</head>
+<body>
+
+  <header class="play-header">
+    <a href="/" class="btn-back">← Biblioteca</a>
+    <div class="play-title-block">
+      <span class="play-icon">{{ icon }}</span>
+      <div>
+        <h1 class="play-game-title">{{ title }}</h1>
+        <p class="play-system">{{ system }}</p>
+      </div>
+    </div>
+    <div style="width:120px;"></div>
+  </header>
+
+  <main class="play-main">
+    <div class="emulator-wrapper">
+      <div id="game"></div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>PedusJinxs — Powered by EmulatorJS</p>
+  </footer>
+
+  <script>
+    EJS_player        = "#game";
+    EJS_gameUrl       = "/roms/{{ filename }}";
+    EJS_core          = "{{ core }}";
+    EJS_gameName      = "{{ title }}";
+    EJS_pathtodata    = "https://cdn.emulatorjs.org/stable/data/";
+    EJS_startOnLoaded = true;
+    EJS_color         = "#a855f7";
+  </script>
+  <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
+
+</body>
+</html>
