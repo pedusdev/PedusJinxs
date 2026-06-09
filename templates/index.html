@@ -10,88 +10,267 @@
     :root {
       --bg: #0f0f1a; --bg2: #1a1a2e; --bg3: #16213e;
       --accent: #a855f7; --accent2: #7c3aed; --neon: #00f5ff;
-      --green: #10b981; --red: #ef4444; --text: #e2e8f0;
-      --muted: #94a3b8; --border: #2d2d4e; --card: #1e1e35; --radius: 12px;
+      --green: #10b981; --gold: #f59e0b; --red: #ef4444;
+      --text: #e2e8f0; --muted: #94a3b8; --border: #2d2d4e;
+      --card: #1e1e35; --radius: 12px;
     }
     body { background: var(--bg); color: var(--text); font-family: 'Rajdhani', sans-serif; font-size: 16px; min-height: 100vh; display: flex; flex-direction: column; }
     a { color: var(--accent); text-decoration: none; }
 
-    /* Header */
-    .header { background: linear-gradient(135deg, var(--bg2), var(--bg3)); border-bottom: 1px solid var(--border); padding: 0 1.5rem; position: sticky; top: 0; z-index: 100; }
-    .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; gap: 1rem; }
+    /* ── NAV ─────────────────────────────────── */
+    .nav {
+      background: linear-gradient(135deg, var(--bg2), var(--bg3));
+      border-bottom: 1px solid var(--border);
+      padding: 0 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
     .logo { display: flex; align-items: center; gap: 1rem; }
-    .logo-icon { font-size: 2.5rem; filter: drop-shadow(0 0 12px var(--accent)); animation: pulse 2s infinite; }
-    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-    .logo-title { font-family: 'Press Start 2P', monospace; font-size: 1.1rem; background: linear-gradient(90deg, var(--accent), var(--neon)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.3; }
-    .logo-sub { color: var(--muted); font-size: 0.85rem; margin-top: 2px; }
+    .logo-icon {
+      font-size: 2.2rem;
+      filter: drop-shadow(0 0 12px var(--accent));
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+    .logo-title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 1rem;
+      background: linear-gradient(90deg, var(--accent), var(--neon));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.3;
+    }
+    .logo-sub { color: var(--muted); font-size: 0.8rem; margin-top: 2px; }
 
-    /* Buttons */
-    .btn-upload-trigger { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; border: none; padding: 0.6rem 1.3rem; border-radius: var(--radius); font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+    /* Nav links */
+    .nav-links { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .nav-link {
+      color: var(--muted);
+      font-weight: 700;
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      transition: all 0.2s;
+      font-size: 0.95rem;
+      position: relative;
+    }
+    .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+    .nav-link.active { color: var(--text); background: rgba(168,85,247,0.1); }
+    .notif-badge {
+      position: absolute; top: -4px; right: -4px;
+      background: var(--red); color: white;
+      width: 17px; height: 17px; border-radius: 50%;
+      font-size: 0.65rem; display: flex;
+      align-items: center; justify-content: center;
+      font-weight: 700;
+    }
+    .nav-coins {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #000; padding: 0.4rem 1rem;
+      border-radius: 20px; font-weight: 700; font-size: 0.9rem;
+    }
+    .nav-user {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: var(--card); border: 1px solid var(--border);
+      padding: 0.35rem 0.8rem; border-radius: 20px;
+      color: var(--text); font-weight: 700; font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+    .nav-user:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-logout {
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); padding: 0.4rem 0.8rem;
+      border-radius: 8px; cursor: pointer;
+      font-family: 'Rajdhani', sans-serif; font-weight: 700;
+      font-size: 0.9rem; transition: all 0.2s;
+    }
+    .btn-logout:hover { border-color: var(--red); color: var(--red); }
+    .btn-register {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: white; padding: 0.45rem 1.1rem;
+      border-radius: 8px; font-weight: 700; font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+    .btn-register:hover { filter: brightness(1.2); transform: translateY(-1px); color: white; }
+    .btn-login {
+      background: transparent; border: 1px solid var(--border);
+      color: var(--text); padding: 0.45rem 1.1rem;
+      border-radius: 8px; font-weight: 700; font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+    .btn-login:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-upload-trigger {
+      background: linear-gradient(135deg, var(--green), #059669);
+      color: white; border: none; padding: 0.45rem 1.1rem;
+      border-radius: 8px; font-family: 'Rajdhani', sans-serif;
+      font-weight: 700; font-size: 0.95rem; cursor: pointer;
+      transition: all 0.2s; white-space: nowrap;
+    }
     .btn-upload-trigger:hover { filter: brightness(1.2); transform: translateY(-1px); }
-    .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; border: none; padding: 0.7rem 1.5rem; border-radius: var(--radius); font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.2s; }
-    .btn-primary:hover { filter: brightness(1.2); }
-    .btn-play { background: linear-gradient(135deg, var(--green), #059669); color: white; padding: 0.45rem 1rem; border-radius: 8px; font-weight: 700; font-size: 0.95rem; transition: all 0.2s; display: inline-block; }
-    .btn-play:hover { filter: brightness(1.2); transform: scale(1.05); color: white; }
-    .btn-delete { background: transparent; border: 1px solid var(--red); color: var(--red); padding: 0.45rem 0.7rem; border-radius: 8px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s; }
-    .btn-delete:hover { background: var(--red); color: white; }
 
-    /* Upload */
+    /* ── Flash ───────────────────────────────── */
+    .flash-container { padding: 0.4rem 0; }
+    .flash {
+      padding: 0.6rem 1rem; border-radius: 8px;
+      margin-bottom: 0.4rem; font-weight: 600;
+      transition: opacity 0.4s;
+    }
+    .flash--success { background: rgba(16,185,129,0.15); border: 1px solid var(--green); color: var(--green); }
+    .flash--error   { background: rgba(239,68,68,0.15);  border: 1px solid var(--red);   color: var(--red); }
+
+    /* ── Upload Panel ────────────────────────── */
     .upload-panel { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
     .upload-panel.open { max-height: 200px; }
-    .upload-form { display: flex; align-items: center; gap: 1rem; padding: 1rem 0; flex-wrap: wrap; }
-    .upload-label { flex: 1; min-width: 260px; background: var(--bg); border: 2px dashed var(--border); border-radius: var(--radius); padding: 0.8rem 1.2rem; cursor: pointer; display: flex; align-items: center; transition: border-color 0.2s; font-weight: 600; color: var(--muted); }
+    .upload-form {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1rem 0; flex-wrap: wrap;
+    }
+    .upload-label {
+      flex: 1; min-width: 260px;
+      background: var(--bg); border: 2px dashed var(--border);
+      border-radius: var(--radius); padding: 0.8rem 1.2rem;
+      cursor: pointer; display: flex; align-items: center;
+      transition: border-color 0.2s; font-weight: 600; color: var(--muted);
+    }
     .upload-label:hover { border-color: var(--accent); color: var(--text); }
     .upload-label input { display: none; }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: white; border: none; padding: 0.7rem 1.5rem;
+      border-radius: var(--radius); font-family: 'Rajdhani', sans-serif;
+      font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-primary:hover { filter: brightness(1.2); }
 
-    /* Flash */
-    .flash-container { padding: 0.5rem 0; }
-    .flash { padding: 0.6rem 1rem; border-radius: 8px; margin-bottom: 0.4rem; font-weight: 600; transition: opacity 0.4s; }
-    .flash--success { background: rgba(16,185,129,0.15); border: 1px solid var(--green); color: var(--green); }
-    .flash--error { background: rgba(239,68,68,0.15); border: 1px solid var(--red); color: var(--red); }
-
-    /* Stats */
-    .stats-bar { display: flex; align-items: center; gap: 1.5rem; padding: 0.8rem 1.5rem; background: var(--bg2); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    /* ── Stats Bar ───────────────────────────── */
+    .stats-bar {
+      display: flex; align-items: center; gap: 1.5rem;
+      padding: 0.8rem 1.5rem; background: var(--bg2);
+      border-bottom: 1px solid var(--border); flex-wrap: wrap;
+    }
     .stat { display: flex; flex-direction: column; align-items: center; min-width: 55px; }
-    .stat-num { font-family: 'Press Start 2P', monospace; font-size: 1.1rem; color: var(--accent); }
+    .stat-num { font-family: 'Press Start 2P', monospace; font-size: 1rem; color: var(--accent); }
     .stat-label { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
-    .stat-search input, .stat-filter select { background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 0.5rem 1rem; border-radius: 8px; font-family: 'Rajdhani', sans-serif; font-size: 0.95rem; outline: none; transition: border-color 0.2s; }
-    .stat-search input:focus, .stat-filter select:focus { border-color: var(--accent); }
+    .stat-search input,
+    .stat-filter select {
+      background: var(--bg); border: 1px solid var(--border);
+      color: var(--text); padding: 0.5rem 1rem; border-radius: 8px;
+      font-family: 'Rajdhani', sans-serif; font-size: 0.95rem;
+      outline: none; transition: border-color 0.2s;
+    }
+    .stat-search input:focus,
+    .stat-filter select:focus { border-color: var(--accent); }
     .stat-search input { width: 220px; }
 
-    /* ROM Grid */
+    /* ── User Welcome Bar ────────────────────── */
+    .welcome-bar {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 0.7rem 1.5rem;
+      background: rgba(168,85,247,0.05);
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .welcome-avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--card); border: 2px solid var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+    }
+    .welcome-text { flex: 1; }
+    .welcome-text strong { color: var(--accent); }
+    .welcome-text span { color: var(--muted); font-size: 0.85rem; }
+    .welcome-xp { display: flex; align-items: center; gap: 0.8rem; }
+    .xp-bar-mini { width: 100px; height: 6px; background: var(--border); border-radius: 10px; overflow: hidden; }
+    .xp-fill-mini { height: 100%; background: linear-gradient(90deg, var(--accent), var(--neon)); border-radius: 10px; }
+    .xp-text { font-size: 0.8rem; color: var(--muted); white-space: nowrap; }
+
+    /* ── ROM Grid ────────────────────────────── */
     .main { padding: 2rem 1.5rem; flex: 1; }
     .rom-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 1rem; }
-    .rom-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.2rem; display: flex; align-items: center; gap: 1rem; transition: all 0.2s; position: relative; overflow: hidden; }
-    .rom-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, var(--accent), var(--neon)); border-radius: 3px 0 0 3px; }
-    .rom-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 20px rgba(168,85,247,0.2); }
+
+    .rom-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1rem 1.2rem;
+      display: flex; align-items: center; gap: 1rem;
+      transition: all 0.2s; position: relative; overflow: hidden;
+    }
+    .rom-card::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 3px; background: linear-gradient(180deg, var(--accent), var(--neon));
+      border-radius: 3px 0 0 3px;
+    }
+    .rom-card:hover {
+      border-color: var(--accent); transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(168,85,247,0.2);
+    }
     .rom-icon { font-size: 2rem; flex-shrink: 0; }
     .rom-info { flex: 1; min-width: 0; }
-    .rom-title { font-size: 1rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); }
+    .rom-title {
+      font-size: 1rem; font-weight: 700;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      color: var(--text);
+    }
     .rom-system { font-size: 0.85rem; color: var(--accent); margin-top: 2px; }
     .rom-size { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
     .rom-actions { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
 
-    /* Empty */
+    .btn-play {
+      background: linear-gradient(135deg, var(--green), #059669);
+      color: white; padding: 0.45rem 1rem; border-radius: 8px;
+      font-weight: 700; font-size: 0.95rem; transition: all 0.2s; display: inline-block;
+    }
+    .btn-play:hover { filter: brightness(1.2); transform: scale(1.05); color: white; }
+    .btn-delete {
+      background: transparent; border: 1px solid var(--red);
+      color: var(--red); padding: 0.45rem 0.7rem; border-radius: 8px;
+      cursor: pointer; font-size: 0.9rem; transition: all 0.2s;
+    }
+    .btn-delete:hover { background: var(--red); color: white; }
+
+    /* ── Empty State ─────────────────────────── */
     .empty-state { text-align: center; padding: 5rem 1rem; max-width: 480px; margin: 0 auto; }
     .empty-icon { font-size: 5rem; margin-bottom: 1.5rem; }
-    .empty-state h2 { font-family: 'Press Start 2P', monospace; font-size: 1rem; color: var(--accent); margin-bottom: 1rem; }
+    .empty-state h2 {
+      font-family: 'Press Start 2P', monospace; font-size: 1rem;
+      color: var(--accent); margin-bottom: 1rem;
+    }
     .empty-state p { color: var(--muted); margin-bottom: 0.5rem; }
 
-    /* Footer */
-    .footer { text-align: center; padding: 1.2rem; background: var(--bg2); border-top: 1px solid var(--border); color: var(--muted); font-size: 0.88rem; }
+    /* ── Footer ──────────────────────────────── */
+    .footer {
+      text-align: center; padding: 1.2rem;
+      background: var(--bg2); border-top: 1px solid var(--border);
+      color: var(--muted); font-size: 0.88rem;
+    }
     .footer a { color: var(--accent); }
 
+    /* ── Responsive ──────────────────────────── */
     @media (max-width: 600px) {
-      .logo-title { font-size: 0.8rem; }
+      .logo-title { font-size: 0.75rem; }
       .stats-bar { gap: 0.8rem; }
       .stat-search input { width: 140px; }
+      .nav-links { gap: 0.3rem; }
     }
   </style>
 </head>
 <body>
 
-  <header class="header">
-    <div class="header-inner">
+  <!-- ══════════════════════════════════════════
+       NAV
+  ══════════════════════════════════════════ -->
+  <nav class="nav">
+    <div class="nav-inner">
+
+      <!-- Logo -->
       <div class="logo">
         <span class="logo-icon">👾</span>
         <div>
@@ -99,9 +278,46 @@
           <p class="logo-sub">ROM Browser Launcher</p>
         </div>
       </div>
-      <button class="btn-upload-trigger" onclick="toggleUpload()">+ Upload ROM</button>
+
+      <!-- Links -->
+      <div class="nav-links">
+        <a href="/" class="nav-link active">🎮 Biblioteca</a>
+        <a href="/store" class="nav-link">🏪 Tienda</a>
+
+        {% if current_user %}
+          <!-- Amigos con badge -->
+          <a href="/friends" class="nav-link" style="position:relative;">
+            👥 Amigos
+            {% if pending_requests_count > 0 %}
+              <span class="notif-badge">{{ pending_requests_count }}</span>
+            {% endif %}
+          </a>
+
+          <!-- Perfil -->
+          <a href="/profile" class="nav-user">
+            {{ current_user.avatar }} {{ current_user.username }}
+          </a>
+
+          <!-- Coins -->
+          <span class="nav-coins">💰 {{ current_user.coins }} PC</span>
+
+          <!-- Subir ROM -->
+          <button class="btn-upload-trigger" onclick="toggleUpload()">+ ROM</button>
+
+          <!-- Salir -->
+          <form action="/logout" method="GET">
+            <button class="btn-logout">Salir</button>
+          </form>
+
+        {% else %}
+          <!-- NO logueado -->
+          <a href="/register" class="btn-register">🚀 Registrarse</a>
+          <a href="/login" class="btn-login">🔑 Login</a>
+        {% endif %}
+      </div>
     </div>
 
+    <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         <div class="flash-container">
@@ -112,17 +328,46 @@
       {% endif %}
     {% endwith %}
 
-    <div class="upload-panel" id="uploadPanel">
-      <form method="POST" action="/upload" enctype="multipart/form-data" class="upload-form">
-        <label class="upload-label" id="uploadLabel">
-          <span id="uploadText">📂 Arrastra o haz clic para seleccionar una ROM</span>
-          <input type="file" name="rom" id="romInput" accept=".nes,.sfc,.smc,.gba,.gbc,.gb,.n64,.z64,.v64,.nds,.md,.gen,.sms,.gg,.bin,.iso,.a26,.vb,.ws,.wsc,.ngp,.ngc,.32x,.pce,.tap,.tzx,.z80,.sna,.szx,.scl,.trd" onchange="updateLabel(this)" required/>
-        </label>
-        <button type="submit" class="btn-primary">⬆ Subir ROM</button>
-      </form>
-    </div>
-  </header>
+    <!-- Upload Panel (solo si logueado) -->
+    {% if current_user %}
+      <div class="upload-panel" id="uploadPanel">
+        <form method="POST" action="/upload" enctype="multipart/form-data" class="upload-form">
+          <label class="upload-label">
+            <span id="uploadText">📂 Arrastra o haz clic para seleccionar una ROM</span>
+            <input type="file" name="rom" id="romInput"
+              accept=".nes,.sfc,.smc,.gba,.gbc,.gb,.n64,.z64,.v64,.nds,.md,.gen,.sms,.gg,.bin,.iso,.a26,.vb,.ws,.wsc,.ngp,.ngc,.32x,.pce,.tap,.tzx,.z80,.sna,.szx,.scl,.trd"
+              onchange="updateLabel(this)" required/>
+          </label>
+          <button type="submit" class="btn-primary">⬆ Subir ROM</button>
+        </form>
+      </div>
+    {% endif %}
+  </nav>
 
+  <!-- ══════════════════════════════════════════
+       WELCOME BAR (solo si logueado)
+  ══════════════════════════════════════════ -->
+  {% if current_user %}
+    {% set xp_needed = current_user.level * 100 %}
+    {% set xp_percent = ((current_user.xp / xp_needed) * 100) | int %}
+    <div class="welcome-bar">
+      <div class="welcome-avatar">{{ current_user.avatar }}</div>
+      <div class="welcome-text">
+        <strong>{{ current_user.username }}</strong>
+        <span> · Nivel {{ current_user.level }} · {{ get_level_title(current_user.level) }}</span>
+      </div>
+      <div class="welcome-xp">
+        <span class="xp-text">XP {{ current_user.xp }}/{{ xp_needed }}</span>
+        <div class="xp-bar-mini">
+          <div class="xp-fill-mini" style="width:{{ xp_percent }}%"></div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- ══════════════════════════════════════════
+       STATS BAR
+  ══════════════════════════════════════════ -->
   <div class="stats-bar">
     <div class="stat">
       <span class="stat-num">{{ roms|length }}</span>
@@ -133,7 +378,7 @@
       <span class="stat-label">Sistemas</span>
     </div>
     <div class="stat-search">
-      <input type="text" id="searchInput" placeholder="🔍 Buscar ROM..." oninput="filterRoms()" />
+      <input type="text" id="searchInput" placeholder="🔍 Buscar ROM..." oninput="filterRoms()"/>
     </div>
     <div class="stat-filter">
       <select id="systemFilter" onchange="filterRoms()">
@@ -145,11 +390,16 @@
     </div>
   </div>
 
+  <!-- ══════════════════════════════════════════
+       ROM GRID
+  ══════════════════════════════════════════ -->
   <main class="main">
     {% if roms %}
       <div class="rom-grid" id="romGrid">
         {% for rom in roms %}
-          <div class="rom-card" data-title="{{ rom.title|lower }}" data-system="{{ rom.system }}">
+          <div class="rom-card"
+               data-title="{{ rom.title | lower }}"
+               data-system="{{ rom.system }}">
             <div class="rom-icon">{{ rom.icon }}</div>
             <div class="rom-info">
               <h3 class="rom-title">{{ rom.title }}</h3>
@@ -158,43 +408,93 @@
             </div>
             <div class="rom-actions">
               <a href="/play/{{ rom.filename }}" class="btn-play">▶ Jugar</a>
-              <form method="POST" action="/delete/{{ rom.filename }}" onsubmit="return confirm('¿Eliminar {{ rom.title }}?')">
-                <button type="submit" class="btn-delete">🗑</button>
-              </form>
+              {% if current_user %}
+                <form method="POST" action="/delete/{{ rom.filename }}"
+                      onsubmit="return confirm('¿Eliminar {{ rom.title }}?')">
+                  <button type="submit" class="btn-delete">🗑</button>
+                </form>
+              {% endif %}
             </div>
           </div>
         {% endfor %}
       </div>
+
+      <!-- Sin resultados de búsqueda -->
+      <div id="noResults" style="display:none; text-align:center; padding:3rem; color:var(--muted);">
+        <div style="font-size:3rem; margin-bottom:1rem;">🔍</div>
+        <p style="font-size:1.1rem;">No se encontraron ROMs con ese criterio</p>
+      </div>
+
     {% else %}
+      <!-- Empty state -->
       <div class="empty-state">
         <div class="empty-icon">🎮</div>
         <h2>¡Sin ROMs todavía!</h2>
-        <p>Sube tu primera ROM usando el botón de arriba.</p>
+        {% if current_user %}
+          <p>Sube tu primera ROM usando el botón <strong>+ ROM</strong> de arriba.</p>
+        {% else %}
+          <p>Inicia sesión para poder subir y jugar ROMs.</p>
+          <br/>
+          <a href="/register" class="btn-register" style="display:inline-block; padding:0.7rem 1.5rem; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:white; border-radius:12px; font-weight:700;">🚀 Crear cuenta gratis</a>
+        {% endif %}
+        <p style="margin-top:1.5rem; font-size:0.85rem;">
+          Formatos: NES, SNES, GBA, GB, GBC, N64, NDS, PS1, Sega MD, Spectrum y más
+        </p>
       </div>
     {% endif %}
   </main>
 
+  <!-- ══════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════ -->
   <footer class="footer">
-    <p>PedusJinxs &copy; 2024 — Powered by <a href="https://emulatorjs.org" target="_blank">EmulatorJS</a> & Flask</p>
+    <p>
+      PedusJinxs &copy; 2024 —
+      Powered by <a href="https://emulatorjs.org" target="_blank">EmulatorJS</a> & Flask
+      {% if current_user %}
+        · Hola, <strong style="color:var(--accent)">{{ current_user.username }}</strong> 👾
+      {% endif %}
+    </p>
   </footer>
 
+  <!-- ══════════════════════════════════════════
+       SCRIPTS
+  ══════════════════════════════════════════ -->
   <script>
+    // Toggle panel de subida
     function toggleUpload() {
-      document.getElementById("uploadPanel").classList.toggle("open");
+      const panel = document.getElementById("uploadPanel");
+      if (panel) panel.classList.toggle("open");
     }
+
+    // Actualizar label del input de archivo
     function updateLabel(input) {
-      if (input.files && input.files[0])
+      if (input.files && input.files[0]) {
         document.getElementById("uploadText").textContent = "✅ " + input.files[0].name;
+      }
     }
+
+    // Filtrar ROMs por nombre y sistema
     function filterRoms() {
       const search = document.getElementById("searchInput").value.toLowerCase();
       const system = document.getElementById("systemFilter").value;
-      document.querySelectorAll(".rom-card").forEach(card => {
+      const cards  = document.querySelectorAll(".rom-card");
+      let visible  = 0;
+
+      cards.forEach(card => {
         const titleMatch = card.dataset.title.includes(search);
-        const sysMatch = !system || card.dataset.system === system;
-        card.style.display = (titleMatch && sysMatch) ? "flex" : "none";
+        const sysMatch   = !system || card.dataset.system === system;
+        const show       = titleMatch && sysMatch;
+        card.style.display = show ? "flex" : "none";
+        if (show) visible++;
       });
+
+      // Mostrar mensaje si no hay resultados
+      const noResults = document.getElementById("noResults");
+      if (noResults) noResults.style.display = visible === 0 ? "block" : "none";
     }
+
+    // Auto-ocultar flash messages
     setTimeout(() => {
       document.querySelectorAll(".flash").forEach(el => {
         el.style.opacity = "0";
@@ -202,5 +502,6 @@
       });
     }, 3500);
   </script>
+
 </body>
 </html>
