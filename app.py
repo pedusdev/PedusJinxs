@@ -40,6 +40,13 @@ SYSTEM_MAP = {
     ".wsc":  {"core": "wsc",      "name": "WonderSwan Color",      "icon": "🟣"},
     ".ngp":  {"core": "ngp",      "name": "Neo Geo Pocket",        "icon": "⚪"},
     ".ngc":  {"core": "ngpc",     "name": "Neo Geo Pocket Color",  "icon": "⚪"},
+    ".tap":  {"core": "fuse", "name": "ZX Spectrum", "icon": "🖥️"},
+    ".tzx":  {"core": "fuse", "name": "ZX Spectrum", "icon": "🖥️"},
+    ".z80":  {"core": "fuse", "name": "ZX Spectrum", "icon": "🖥️"},
+    ".sna":  {"core": "fuse", "name": "ZX Spectrum", "icon": "🖥️"},
+    ".szx":  {"core": "fuse", "name": "ZX Spectrum", "icon": "🖥️"},
+    ".scl":  {"core": "fuse", "name": "ZX Spectrum", "icon": "🖥️"},
+    ".trd":  {"core": "fuse", "name": "ZX Spectrum", "icon": "🖥️"},
 }
 
 ALLOWED_EXTENSIONS = set(SYSTEM_MAP.keys())
