@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Amigos — PedusJinxs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f0f1a; --bg2: #1a1a2e; --bg3: #16213e;
+      --accent: #a855f7; --accent2: #7c3aed; --neon: #00f5ff;
+      --green: #10b981; --gold: #f59e0b; --red: #ef4444;
+      --text: #e2e8f0; --muted: #94a3b8; --border: #2d2d4e;
+      --card: #1e1e35; --radius: 12px;
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Rajdhani', sans-serif; min-height: 100vh; }
+    a { color: var(--accent); text-decoration: none; }
+
+    /* Nav */
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; background: var(--bg2); border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 1rem; }
+    .nav-logo { font-family: 'Press Start 2P', monospace; font-size: 0.9rem; background: linear-gradient(90deg, var(--accent), var(--neon)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .nav-links { display: flex; gap: 1rem; align-items: center; }
+    .nav-link { color: var(--muted); font-weight: 700; padding: 0.4rem 0.8rem; border-radius: 8px; transition: all 0.2s; }
+    .nav-link:hover, .nav-link.active { color: var(--text); background: var(--bg3); }
+    .nav-coins { background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; padding: 0.4rem 1rem; border-radius: 20px; font-weight: 700; }
+    .nav-notif { position: relative; }
+    .notif-badge { position: absolute; top: -5px; right: -5px; background: var(--red); color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+    .btn-logout { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 0.4rem 0.8rem; border-radius: 8px; cursor: pointer; font-family: 'Rajdhani', sans-serif; font-weight: 700; }
+    .btn-logout:hover { border-color: var(--red); color: var(--red); }
+
+    /* Header */
+    .page-header { padding: 1.5rem; }
+    .page-header h1 { font-family: 'Press Start 2P', monospace; font-size: 0.9rem; margin-bottom: 0.5rem; }
+    .page-header p { color: var(--muted); }
+
+    /* Search */
+    .search-bar { display: flex; gap: 0.8rem; padding: 0 1.5rem 1.5rem; }
+    .search-input { flex: 1; background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 0.75rem 1rem; border-radius: var(--radius); font-family: 'Rajdhani', sans-serif; font-size: 1rem; outline: none; transition: border-color 0.2s; max-width: 400px; }
+    .search-input:focus { border-color: var(--accent); }
+    .btn-search { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: var(--radius); font-family: 'Rajdhani', sans-serif; font-weight: 700; cursor: pointer; }
+
+    /* Grid layout */
+    .friends-layout { display: grid; grid-template-columns: 1fr 360px; gap: 1.5rem; padding: 0 1.5rem 1.5rem; }
+    @media (max-width: 768px) { .friends-layout { grid-template-columns: 1fr; } }
+
+    /* Card */
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem; margin-bottom: 1.2rem; }
+    .card-title { font-family: 'Press Start 2P', monospace; font-size: 0.7rem; color: var(--text); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+    .card-badge { background: var(--red); color: white; padding: 1px 7px; border-radius: 10px; font-size: 0.65rem; font-family: 'Rajdhani', sans-serif; }
+
+    /* Friend card */
+    .friend-card { display: flex; align-items: center; gap: 1rem; padding: 0.8rem 0; border-bottom: 1px solid var(--border); }
+    .friend-card:last-child { border-bottom: none; }
+    .friend-avatar-wrap { position: relative; }
+    .friend-avatar { width: 50px; height: 50px; border-radius: 50%; background: var(--bg); border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
+    .friend-dot { position: absolute; bottom: 0; right: 0; width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--card); }
+    .friend-dot.online { background: var(--green); }
+    .friend-dot.offline { background: var(--muted); }
+    .friend-info { flex: 1; }
+    .friend-name { font-weight: 700; font-size: 1rem; }
+    .friend-name a { color: var(--text); }
+    .friend-name a:hover { color: var(--accent); }
+    .friend-level { font-size: 0.8rem; color: var(--accent); }
+    .friend-status { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+    .friend-actions { display: flex; gap: 0.5rem; }
+
+    /* Buttons */
+    .btn { padding: 0.4rem 0.9rem; border-radius: 8px; font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 0.88rem; cursor: pointer; border: none; transition: all 0.2s; }
+    .btn-accept { background: var(--green); color: white; }
+    .btn-accept:hover { filter: brightness(1.2); }
+    .btn-reject { background: transparent; border: 1px solid var(--red); color: var(--red); }
+    .btn-reject:hover { background: var(--red); color: white; }
+    .btn-remove { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+    .btn-remove:hover { border-color: var(--red); color: var(--red); }
+    .btn-add { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; }
+    .btn-add:hover { filter: brightness(1.2); }
+    .btn-pending { background: transparent; border: 1px solid var(--gold); color: var(--gold); pointer-events: none; }
+
+    /* Activity feed */
+    .feed-item { display: flex; gap: 0.8rem; padding: 0.7rem 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+    .feed-item:last-child { border-bottom: none; }
+    .feed-avatar { font-size: 1.5rem; flex-shrink: 0; }
+    .feed-content { flex: 1; }
+    .feed-user { font-weight: 700; color: var(--accent); font-size: 0.9rem; }
+    .feed-text { font-size: 0.88rem; color: var(--muted); margin-top: 1px; }
+    .feed-time { font-size: 0.75rem; color: var(--border); margin-top: 2px; }
+
+    /* Plan badge */
+    .plan-badge { display: inline-block; padding: 1px 6px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; margin-left: 4px; }
+    .plan-badge.pro { background: rgba(168,85,247,0.2); color: var(--accent); }
+    .plan-badge.ultra { background: rgba(245,158,11,0.2); color: var(--gold); }
+
+    /* Empty */
+    .empty { text-align: center; padding: 2rem 1rem; color: var(--muted); }
+    .empty-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+
+    /* Flash */
+    .flash { padding: 0.6rem 1rem; border-radius: 8px; margin: 0 1.5rem 0.5rem; font-weight: 600; }
+    .flash--success { background: rgba(16,185,129,0.15); border: 1px solid var(--green); color: var(--green); }
+    .flash--error { background: rgba(239,68,68,0.15); border: 1px solid var(--red); color: var(--red); }
+
+    /* Footer */
+    .footer { text-align: center; padding: 1.2rem; background: var(--bg2); border-top: 1px solid var(--border); color: var(--muted); font-size: 0.88rem; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <span class="nav-logo">👾 PedusJinxs</span>
+    <div class="nav-links">
+      <a href="/" class="nav-link">🎮 Biblioteca</a>
+      <a href="/store" class="nav-link">🏪 Tienda</a>
+      <a href="/friends" class="nav-link active nav-notif">
+        👥 Amigos
+        {% if pending_requests_count > 0 %}
+          <span class="notif-badge">{{ pending_requests_count }}</span>
+        {% endif %}
+      </a>
+      <a href="/profile" class="nav-link">👤 Perfil</a>
+      {% if current_user %}
+        <span class="nav-coins">💰 {{ current_user.coins }} PC</span>
+        <form action="/logout" method="GET" style="display:inline;">
+          <button class="btn-logout">Salir</button>
+        </form>
+      {% endif %}
+    </div>
+  </nav>
+
+  <!-- Flash -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="flash flash--{{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <h1>👥 Amigos</h1>
+    <p>Conecta y juega con tus amigos en PedusJinxs</p>
+  </div>
+
+  <!-- SEARCH -->
+  <form class="search-bar" method="GET">
+    <input type="text" name="search" class="search-input"
+           placeholder="🔍 Buscar jugadores..." value="{{ query }}"/>
+    <button type="submit" class="btn-search">Buscar</button>
+  </form>
+
+  <!-- LAYOUT -->
+  <div class="friends-layout">
+    <div>
+
+      <!-- SOLICITUDES PENDIENTES -->
+      {% if pending %}
+        <div class="card">
+          <h3 class="card-title">
+            🔔 Solicitudes pendientes
+            <span class="card-badge">{{ pending|length }}</span>
+          </h3>
+          {% for req in pending %}
+            <div class="friend-card">
+              <div class="friend-avatar-wrap">
+                <div class="friend-avatar">{{ req.avatar }}</div>
+              </div>
+              <div class="friend-info">
+                <div class="friend-name">
+                  <a href="/profile/{{ req.username }}">{{ req.username }}</a>
+                </div>
+                <div class="friend-level">Nivel {{ req.level }}</div>
+                <div class="friend-status">Quiere ser tu amigo 👋</div>
+              </div>
+              <div class="friend-actions">
+                <form method="POST" action="/friends/accept/{{ req.id }}">
+                  <button class="btn btn-accept">✅ Aceptar</button>
+                </form>
+                <form method="POST" action="/friends/reject/{{ req.id }}">
+                  <button class="btn btn-reject">❌</button>
+                </form>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <!-- RESULTADOS DE BÚSQUEDA -->
+      {% if query %}
+        <div class="card">
+          <h3 class="card-title">🔍 Resultados: "{{ query }}"</h3>
+          {% if results %}
+            {% for user in results %}
+              <div class="friend-card">
+                <div class="friend-avatar-wrap">
+                  <div class="friend-avatar">{{ user.avatar }}</div>
+                  <div class="friend-dot {{ 'online' if user.is_online else 'offline' }}"></div>
+                </div>
+                <div class="friend-info">
+                  <div class="friend-name">
+                    <a href="/profile/{{ user.username }}">{{ user.username }}</a>
+                    {% if user.plan == 'pro' %}<span class="plan-badge pro">PRO</span>{% endif %}
+                    {% if user.plan == 'ultra' %}<span class="plan-badge ultra">ULTRA</span>{% endif %}
+                  </div>
+                  <div class="friend-level">Nivel {{ user.level }} · {{ get_level_title(user.level) }}</div>
+                  <div class="friend-status">{{ '🟢 Online ahora' if user.is_online else '⚫ Offline' }}</div>
+                </div>
+                <div class="friend-actions">
+                  {% set status = [] %}
+                  {% for f in friends %}
+                    {% if f.id == user.id %}
+                      <button class="btn btn-pending">✅ Amigos</button>
+                    {% endif %}
+                  {% endfor %}
+                  {% for p in pending %}
+                    {% if p.id == user.id %}
+                      <button class="btn btn-pending">⏳ Pendiente</button>
+                    {% endif %}
+                  {% endfor %}
+                  <form method="POST" action="/friends/add/{{ user.id }}">
+                    <button class="btn btn-add">➕ Añadir</button>
+                  </form>
+                </div>
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="empty">
+              <div class="empty-icon">🔍</div>
+              <p>No se encontró ningún usuario con ese nombre</p>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <!-- LISTA DE AMIGOS -->
+      <div class="card">
+        <h3 class="card-title">👥 Mis amigos ({{ friends|length }})</h3>
+        {% if friends %}
+          {% for friend in friends %}
+            <div class="friend-card">
+              <div class="friend-avatar-wrap">
+                <div class="friend-avatar">{{ friend.avatar }}</div>
+                <div class="friend-dot {{ 'online' if friend.is_online else 'offline' }}"></div>
+              </div>
+              <div class="friend-info">
+                <div class="friend-name">
+                  <a href="/profile/{{ friend.username }}">{{ friend.username }}</a>
+                  {% if friend.plan == 'pro' %}<span class="plan-badge pro">PRO</span>{% endif %}
+                  {% if friend.plan == 'ultra' %}<span class="plan-badge ultra">ULTRA</span>{% endif %}
+                </div>
+                <div class="friend-level">Nivel {{ friend.level }} · {{ get_level_title(friend.level) }}</div>
+                <div class="friend-status">
+                  {{ '🟢 Online ahora' if friend.is_online else '⚫ Última vez: ' + friend.last_seen[:10] }}
+                </div>
+              </div>
+              <div class="friend-actions">
+                <a href="/profile/{{ friend.username }}" class="btn btn-add">👤 Ver</a>
+                <form method="POST" action="/friends/remove/{{ friend.id }}" onsubmit="return confirm('¿Eliminar a {{ friend.username }}?')">
+                  <button class="btn btn-remove">❌</button>
+                </form>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="empty">
+            <div class="empty-icon">😢</div>
+            <p>Sin amigos todavía</p>
+            <p style="margin-top: 0.5rem;">Usa el buscador para encontrar jugadores</p>
+          </div>
+        {% endif %}
+      </div>
+
+    </div>
+
+    <!-- SIDEBAR: FEED -->
+    <div>
+      <div class="card">
+        <h3 class="card-title">📡 Actividad de amigos</h3>
+        {% if feed %}
+          {% for item in feed %}
+            <div class="feed-item">
+              <div class="feed-avatar">{{ item.avatar }}</div>
+              <div class="feed-content">
+                <div class="feed-user">{{ item.username }}</div>
+                <div class="feed-text">{{ item.content }}</div>
+                <div class="feed-time">{{ item.created_at[:16].replace('T', ' ') }}</div>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="empty">
+            <div class="empty-icon">📡</div>
+            <p>Sin actividad de amigos todavía</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    <p>PedusJinxs &copy; 2024 — Powered by EmulatorJS & Flask</p>
+  </footer>
+
+</body>
+</html>
