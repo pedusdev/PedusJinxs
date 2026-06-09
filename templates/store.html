@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PedusStore 🏪 — Tienda de Juegos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f0f1a; --bg2: #1a1a2e; --bg3: #16213e;
+      --accent: #a855f7; --accent2: #7c3aed; --neon: #00f5ff;
+      --green: #10b981; --gold: #f59e0b; --red: #ef4444;
+      --text: #e2e8f0; --muted: #94a3b8; --border: #2d2d4e;
+      --card: #1e1e35; --radius: 12px;
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Rajdhani', sans-serif; min-height: 100vh; }
+    a { color: var(--accent); text-decoration: none; }
+
+    /* Nav */
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; background: var(--bg2); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: 'Press Start 2P', monospace; font-size: 0.9rem; background: linear-gradient(90deg, var(--accent), var(--neon)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+    .nav-link { color: var(--muted); font-weight: 600; transition: color 0.2s; padding: 0.4rem 0.8rem; border-radius: 8px; }
+    .nav-link:hover, .nav-link.active { color: var(--text); background: var(--bg3); }
+    .nav-coins { background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; padding: 0.4rem 1rem; border-radius: 20px; font-weight: 700; font-size: 0.9rem; }
+
+    /* User Bar */
+    .user-bar { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.5rem; background: var(--bg3); border-bottom: 1px solid var(--border); }
+    .avatar { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; background: var(--card); }
+    .user-info h3 { font-size: 1rem; }
+    .user-info p { color: var(--muted); font-size: 0.85rem; }
+    .user-stats { display: flex; gap: 1.5rem; margin-left: auto; }
+    .user-stat { text-align: center; }
+    .user-stat-num { font-family: 'Press Start 2P', monospace; font-size: 0.8rem; color: var(--gold); }
+    .user-stat-label { font-size: 0.75rem; color: var(--muted); }
+
+    /* Store Header */
+    .store-header { padding: 2rem 1.5rem 1rem; }
+    .store-header h1 { font-family: 'Press Start 2P', monospace; font-size: 1.1rem; color: var(--text); margin-bottom: 0.5rem; }
+    .store-header p { color: var(--muted); }
+
+    /* Categories */
+    .categories { display: flex; gap: 0.8rem; padding: 0 1.5rem 1.5rem; flex-wrap: wrap; }
+    .cat-btn { background: var(--card); border: 1px solid var(--border); color: var(--muted); padding: 0.4rem 1rem; border-radius: 20px; cursor: pointer; font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 0.9rem; transition: all 0.2s; }
+    .cat-btn:hover, .cat-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+    /* Game Grid */
+    .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.2rem; padding: 0 1.5rem 2rem; }
+
+    .game-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: all 0.2s; }
+    .game-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 8px 25px rgba(168,85,247,0.2); }
+
+    .game-banner { height: 140px; background: linear-gradient(135deg, var(--bg3), var(--card)); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; position: relative; }
+    .game-badge { position: absolute; top: 8px; right: 8px; background: var(--green); color: white; padding: 2px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; }
+    .game-badge.featured { background: var(--gold); color: #000; }
+    .game-badge.new { background: var(--red); }
+
+    .game-body { padding: 1rem; }
+    .game-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 4px; }
+    .game-dev { font-size: 0.8rem; color: var(--accent); margin-bottom: 6px; }
+    .game-desc { font-size: 0.85rem; color: var(--muted); margin-bottom: 10px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .game-tags { display: flex; gap: 0.4rem; margin-bottom: 10px; flex-wrap: wrap; }
+    .game-tag { background: var(--bg); padding: 2px 8px; border-radius: 6px; font-size: 0.75rem; color: var(--muted); }
+
+    .game-footer { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1rem; border-top: 1px solid var(--border); }
+    .game-price { font-weight: 700; color: var(--gold); font-size: 1rem; }
+    .game-price.free { color: var(--green); }
+    .game-stars { color: var(--gold); font-size: 0.85rem; }
+    .btn-buy { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; border: none; padding: 0.4rem 1rem; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: 'Rajdhani', sans-serif; font-size: 0.9rem; transition: all 0.2s; }
+    .btn-buy:hover { filter: brightness(1.2); transform: scale(1.05); }
+    .btn-buy.owned { background: var(--green); pointer-events: none; }
+
+    /* Coin Packs */
+    .coin-section { padding: 2rem 1.5rem; }
+    .coin-section h2 { font-family: 'Press Start 2P', monospace; font-size: 0.9rem; margin-bottom: 1rem; }
+    .coin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+    .coin-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem; text-align: center; transition: all 0.2s; position: relative; cursor: pointer; }
+    .coin-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+    .coin-card.best { border-color: var(--gold); }
+    .coin-card.best::after { content: '🔥 MEJOR VALOR'; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; padding: 2px 10px; border-radius: 10px; font-size: 0.7rem; font-weight: 700; }
+    .coin-amount { font-family: 'Press Start 2P', monospace; font-size: 1.2rem; color: var(--gold); margin: 0.5rem 0; }
+    .coin-bonus { font-size: 0.8rem; color: var(--green); font-weight: 700; }
+    .coin-price { font-size: 1.1rem; font-weight: 700; margin-top: 0.8rem; }
+
+    /* Avatar Section */
+    .avatar-section { padding: 2rem 1.5rem; border-top: 1px solid var(--border); }
+    .avatar-section h2 { font-family: 'Press Start 2P', monospace; font-size: 0.9rem; margin-bottom: 1rem; }
+    .avatar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 0.8rem; }
+    .avatar-item { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 2rem; cursor: pointer; transition: all 0.2s; background: var(--card); position: relative; }
+    .avatar-item:hover { border-color: var(--accent); transform: scale(1.1); }
+    .avatar-item.locked { opacity: 0.4; }
+    .avatar-item.locked::after { content: '🔒'; position: absolute; font-size: 0.8rem; bottom: -2px; right: -2px; }
+    .avatar-item.selected { border-color: var(--accent); box-shadow: 0 0 15px rgba(168,85,247,0.4); }
+    .avatar-price { font-size: 0.65rem; color: var(--gold); text-align: center; margin-top: 4px; font-weight: 600; }
+
+    /* Footer */
+    .footer { text-align: center; padding: 1.2rem; background: var(--bg2); border-top: 1px solid var(--border); color: var(--muted); font-size: 0.88rem; margin-top: auto; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <span class="nav-logo">👾 PedusJinxs</span>
+    <div class="nav-links">
+      <a href="/" class="nav-link">🎮 Biblioteca</a>
+      <a href="/store" class="nav-link active">🏪 Tienda</a>
+      <a href="/profile" class="nav-link">👤 Perfil</a>
+      <span class="nav-coins">💰 {{ user_coins | default(250) }} PC</span>
+    </div>
+  </nav>
+
+  <!-- USER BAR -->
+  <div class="user-bar">
+    <div class="avatar">{{ user_avatar | default('🎮') }}</div>
+    <div class="user-info">
+      <h3>{{ username | default('Jugador') }}</h3>
+      <p>Nivel {{ user_level | default(1) }} — {{ user_title | default('Novato Retro') }}</p>
+    </div>
+    <div class="user-stats">
+      <div class="user-stat">
+        <div class="user-stat-num">{{ games_owned | default(3) }}</div>
+        <div class="user-stat-label">Juegos</div>
+      </div>
+      <div class="user-stat">
+        <div class="user-stat-num">{{ hours_played | default(12) }}h</div>
+        <div class="user-stat-label">Jugadas</div>
+      </div>
+      <div class="user-stat">
+        <div class="user-stat-num">{{ achievements | default(7) }}</div>
+        <div class="user-stat-label">Logros</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STORE -->
+  <div class="store-header">
+    <h1>🏪 PedusStore</h1>
+    <p>Juegos indie exclusivos para consolas retro — 100% legales, 0% virus</p>
+  </div>
+
+  <div class="categories">
+    <button class="cat-btn active">🔥 Todo</button>
+    <button class="cat-btn">⭐ Destacados</button>
+    <button class="cat-btn">🆕 Nuevos</button>
+    <button class="cat-btn">🆓 Gratis</button>
+    <button class="cat-btn">🎮 NES</button>
+    <button class="cat-btn">🕹️ SNES</button>
+    <button class="cat-btn">🎯 GBA</button>
+    <button class="cat-btn">🟢 GB/GBC</button>
+    <button class="cat-btn">🖥️ Spectrum</button>
+  </div>
+
+  <!-- GAME GRID -->
+  <div class="game-grid">
+
+    <!-- Juego 1 — Gratis -->
+    <div class="game-card">
+      <div class="game-banner">
+        🐱
+        <span class="game-badge">GRATIS</span>
+      </div>
+      <div class="game-body">
+        <h3 class="game-title">Tobu Tobu Girl</h3>
+        <p class="game-dev">por Tangram Games</p>
+        <p class="game-desc">Plataformas vertical con mecánicas de vuelo. Rescata a tu gato volando entre las nubes.</p>
+        <div class="game-tags">
+          <span class="game-tag">GB</span>
+          <span class="game-tag">Plataformas</span>
+          <span class="game-tag">Arcade</span>
+        </div>
+      </div>
+      <div class="game-footer">
+        <span class="game-price free">GRATIS</span>
+        <span class="game-stars">⭐⭐⭐⭐⭐</span>
+        <button class="btn-buy owned">✅ Obtenido</button>
+      </div>
+    </div>
+
+    <!-- Juego 2 — Destacado -->
+    <div class="game-card">
+      <div class="game-banner">
+        👾
+        <span class="game-badge featured">⭐ DESTACADO</span>
+      </div>
+      <div class="game-body">
+        <h3 class="game-title">Micro Mages</h3>
+        <p class="game-dev">por Morphcat Games</p>
+        <p class="game-desc">Plataformas cooperativo para hasta 4 jugadores en un cartucho de NES de solo 40KB.</p>
+        <div class="game-tags">
+          <span class="game-tag">NES</span>
+          <span class="game-tag">Coop</span>
+          <span class="game-tag">Plataformas</span>
+        </div>
+      </div>
+      <div class="game-footer">
+        <span class="game-price">💰 80 PC</span>
+        <span class="game-stars">⭐⭐⭐⭐⭐</span>
+        <button class="btn-buy">Comprar</button>
+      </div>
+    </div>
+
+    <!-- Juego 3 — Nuevo -->
+    <div class="game-card">
+      <div class="game-banner">
+        🌌
+        <span class="game-badge new">🆕 NUEVO</span>
+      </div>
+      <div class="game-body">
+        <h3 class="game-title">Goodboy Galaxy</h3>
+        <p class="game-dev">por Hot Flash Games</p>
+        <p class="game-desc">Aventura espacial con exploración no lineal y gráficos impresionantes para GBA.</p>
+        <div class="game-tags">
+          <span class="game-tag">GBA</span>
+          <span class="game-tag">Aventura</span>
+          <span class="game-tag">Exploración</span>
+        </div>
+      </div>
+      <div class="game-footer">
+        <span class="game-price">💰 120 PC</span>
+        <span class="game-stars">⭐⭐⭐⭐⭐</span>
+        <button class="btn-buy">Comprar</button>
+      </div>
+    </div>
+
+    <!-- Juego 4 -->
+    <div class="game-card">
+      <div class="game-banner">
+        ⚔️
+      </div>
+      <div class="game-body">
+        <h3 class="game-title">From Below</h3>
+        <p class="game-dev">por Matt Hughson</p>
+        <p class="game-desc">Puzzle tipo Tetris con temática lovecraftiana. Oscuro, adictivo y original.</p>
+        <div class="game-tags">
+          <span class="game-tag">NES</span>
+          <span class="game-tag">Puzzle</span>
+          <span class="game-tag">Horror</span>
+        </div>
+      </div>
+      <div class="game-footer">
+        <span class="game-price">💰 50 PC</span>
+        <span class="game-stars">⭐⭐⭐⭐</span>
+        <button class="btn-buy">Comprar</button>
+      </div>
+    </div>
+
+    <!-- Juego 5 — Gratis -->
+    <div class="game-card">
+      <div class="game-banner">
+        💀
+        <span class="game-badge">GRATIS</span>
+      </div>
+      <div class="game-body">
+        <h3 class="game-title">Deadeus</h3>
+        <p class="game-dev">por -IZMA-</p>
+        <p class="game-desc">RPG de horror en Game Boy. Múltiples finales, atmósfera oscura y decisiones morales.</p>
+        <div class="game-tags">
+          <span class="game-tag">GB</span>
+          <span class="game-tag">RPG</span>
+          <span class="game-tag">Horror</span>
+        </div>
+      </div>
+      <div class="game-footer">
+        <span class="game-price free">GRATIS</span>
+        <span class="game-stars">⭐⭐⭐⭐</span>
+        <button class="btn-buy">Obtener</button>
+      </div>
+    </div>
+
+    <!-- Juego 6 -->
+    <div class="game-card">
+      <div class="game-banner">
+        🏎️
+        <span class="game-badge featured">⭐ DESTACADO</span>
+      </div>
+      <div class="game-body">
+        <h3 class="game-title">Varooom 3D</h3>
+        <p class="game-dev">por Kemco Homebrew</p>
+        <p class="game-desc">Carreras 3D reales en GBA. Motor 3D impresionante con múltiples circuitos.</p>
+        <div class="game-tags">
+          <span class="game-tag">GBA</span>
+          <span class="game-tag">Carreras</span>
+          <span class="game-tag">3D</span>
+        </div>
+      </div>
+      <div class="game-footer">
+        <span class="game-price">💰 100 PC</span>
+        <span class="game-stars">⭐⭐⭐⭐⭐</span>
+        <button class="btn-buy">Comprar</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- COIN PACKS -->
+  <div class="coin-section">
+    <h2>💰 Comprar PedusCoins</h2>
+    <div class="coin-grid">
+      <div class="coin-card">
+        <div>💰</div>
+        <div class="coin-amount">100 PC</div>
+        <div class="coin-price">€0.99</div>
+      </div>
+      <div class="coin-card">
+        <div>💰💰</div>
+        <div class="coin-amount">500 PC</div>
+        <div class="coin-bonus">+50 bonus!</div>
+        <div class="coin-price">€3.99</div>
+      </div>
+      <div class="coin-card best">
+        <div>💰💰💰</div>
+        <div class="coin-amount">1200 PC</div>
+        <div class="coin-bonus">+200 bonus!</div>
+        <div class="coin-price">€7.99</div>
+      </div>
+      <div class="coin-card">
+        <div>👑💰💰💰💰</div>
+        <div class="coin-amount">3000 PC</div>
+        <div class="coin-bonus">+750 bonus!</div>
+        <div class="coin-price">€17.99</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AVATAR SECTION -->
+  <div class="avatar-section">
+    <h2>👤 Avatares</h2>
+    <p style="color: var(--muted); margin-bottom: 1rem;">Personaliza tu perfil — algunos son gratis, otros cuestan PedusCoins</p>
+    <div class="avatar-grid">
+      <!-- Gratis -->
+      <div>
+        <div class="avatar-item selected">🎮</div>
+        <div class="avatar-price">Gratis</div>
+      </div>
+      <div>
+        <div class="avatar-item">👾</div>
+        <div class="avatar-price">Gratis</div>
+      </div>
+      <div>
+        <div class="avatar-item">🕹️</div>
+        <div class="avatar-price">Gratis</div>
+      </div>
+      <div>
+        <div class="avatar-item">🤖</div>
+        <div class="avatar-price">Gratis</div>
+      </div>
+      <div>
+        <div class="avatar-item">😎</div>
+        <div class="avatar-price">Gratis</div>
+      </div>
+
+      <!-- Premium -->
+      <div>
+        <div class="avatar-item locked">🐉</div>
+        <div class="avatar-price">💰 30 PC</div>
+      </div>
+      <div>
+        <div class="avatar-item locked">👑</div>
+        <div class="avatar-price">💰 50 PC</div>
+      </div>
+      <div>
+        <div class="avatar-item locked">⚡</div>
+        <div class="avatar-price">💰 50 PC</div>
+      </div>
+      <div>
+        <div class="avatar-item locked">🦊</div>
+        <div class="avatar-price">💰 30 PC</div>
+      </div>
+      <div>
+        <div class="avatar-item locked">🎭</div>
+        <div class="avatar-price">💰 40 PC</div>
+      </div>
+      <div>
+        <div class="avatar-item locked">🔥</div>
+        <div class="avatar-price">💰 60 PC</div>
+      </div>
+      <div>
+        <div class="avatar-item locked">💎</div>
+        <div class="avatar-price">💰 80 PC</div>
+      </div>
+      <div>
+        <div class="avatar-item locked">🌟</div>
+        <div class="avatar-price">💰 100 PC</div>
+      </div>
+      <div>
+        <div class="avatar-item locked">🎪</div>
+        <div class="avatar-price">💰 40 PC</div>
+      </div>
+      <div>
+        <div class="avatar-item locked">🏴‍☠️</div>
+        <div class="avatar-price">💰 70 PC</div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>PedusJinxs &copy; 2024 — Todos los juegos son homebrew/indie con licencia de sus creadores</p>
+  </footer>
+
+</body>
+</html>
