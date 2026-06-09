@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login — PedusJinxs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f0f1a; --bg2: #1a1a2e; --accent: #a855f7;
+      --accent2: #7c3aed; --neon: #00f5ff; --green: #10b981;
+      --red: #ef4444; --text: #e2e8f0; --muted: #94a3b8;
+      --border: #2d2d4e; --card: #1e1e35; --radius: 12px;
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Rajdhani', sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .auth-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; padding: 2.5rem; width: 100%; max-width: 420px; box-shadow: 0 0 60px rgba(168,85,247,0.15); }
+    .auth-logo { text-align: center; margin-bottom: 2rem; }
+    .auth-logo span { font-size: 3rem; filter: drop-shadow(0 0 15px var(--accent)); }
+    .auth-logo h1 { font-family: 'Press Start 2P', monospace; font-size: 1rem; background: linear-gradient(90deg, var(--accent), var(--neon)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-top: 0.5rem; }
+    .auth-logo p { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { display: block; font-weight: 700; margin-bottom: 0.4rem; font-size: 0.95rem; }
+    .form-group input { width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 0.75rem 1rem; border-radius: var(--radius); font-family: 'Rajdhani', sans-serif; font-size: 1rem; outline: none; transition: border-color 0.2s; }
+    .form-group input:focus { border-color: var(--accent); }
+    .btn-submit { width: 100%; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; border: none; padding: 0.85rem; border-radius: var(--radius); font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: all 0.2s; margin-top: 0.5rem; }
+    .btn-submit:hover { filter: brightness(1.2); transform: translateY(-1px); }
+    .auth-link { text-align: center; margin-top: 1.2rem; color: var(--muted); font-size: 0.9rem; }
+    .auth-link a { color: var(--accent); font-weight: 700; }
+    .flash { padding: 0.6rem 1rem; border-radius: 8px; margin-bottom: 1rem; font-weight: 600; }
+    .flash--error { background: rgba(239,68,68,0.15); border: 1px solid var(--red); color: var(--red); }
+    .flash--success { background: rgba(16,185,129,0.15); border: 1px solid var(--green); color: var(--green); }
+  </style>
+</head>
+<body>
+  <div class="auth-box">
+    <div class="auth-logo">
+      <span>👾</span>
+      <h1>PedusJinxs</h1>
+      <p>Inicia sesión para jugar</p>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash flash--{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+      <div class="form-group">
+        <label>👤 Usuario</label>
+        <input type="text" name="username" placeholder="Tu nombre de usuario" required autocomplete="username"/>
+      </div>
+      <div class="form-group">
+        <label>🔒 Contraseña</label>
+        <input type="password" name="password" placeholder="Tu contraseña" required autocomplete="current-password"/>
+      </div>
+      <button type="submit" class="btn-submit">🎮 Entrar</button>
+    </form>
+
+    <p class="auth-link">¿No tienes cuenta? <a href="/register">Regístrate gratis</a></p>
+  </div>
+</body>
+</html>
